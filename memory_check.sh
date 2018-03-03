@@ -31,7 +31,12 @@ TOTAL_MEMORY=$( free | grep Mem: | awk '{ print $2}' )
 
 USED_PERCENTAGE=$(( ($USED_MEMORY*100)/$TOTAL_MEMORY ))
 
+
 if [[ $USED_PERCENTAGE -ge $CRITICAL_THRESHOLD ]]; then
+  PROCESS_FILE=/tmp/processlist.txt
+  ps -eo pmem,pid,cmd > $PROCESS_FILE
+  (head -n 1 $PROCESS_FILE && tail -n +2 $PROCESS_FILE | sort -k 1 -nr | head -n 10) > $PROCESS_FILE
+  mail -s "$(date '+%Y%m%d %H:%M:%S') memory check - critical" ${EMAIL} < $PROCESS_FILE
   exit 2
 fi
 
