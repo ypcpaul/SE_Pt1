@@ -29,8 +29,7 @@ fi
 USED_MEMORY=$( free | grep Mem: | awk '{ print $3}' )
 TOTAL_MEMORY=$( free | grep Mem: | awk '{ print $2}' )
 
-# use perl, since bash only deals with integers
-USED_PERCENTAGE=$(perl -e "printf('%.0f', ${USED_MEMORY}/${TOTAL_MEMORY}*100)")
+USED_PERCENTAGE=$(( ($USED_MEMORY*100)/$TOTAL_MEMORY ))
 
 if [[ $USED_PERCENTAGE -ge $CRITICAL_THRESHOLD ]]; then
   exit 2
