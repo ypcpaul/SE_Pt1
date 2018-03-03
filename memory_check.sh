@@ -9,11 +9,11 @@
 while getopts :c:w:e: opt; do
   case $opt in
     c)
-      CRITICALTHRESHOLD=${OPTARG}
+      CRITICAL_THRESHOLD=${OPTARG}
       echo "-c param: ${OPTARG}"
       ;;
     w)
-      WARNINGTHRESHOLD=${OPTARG}
+      WARNING_THRESHOLD=${OPTARG}
       echo "-w param: ${OPTARG}"
       ;;
     e)
@@ -23,7 +23,8 @@ while getopts :c:w:e: opt; do
   esac
 done
 
-if [[ -z ${CRITICALTHRESHOLD+x} || -z ${WARNINGTHRESHOLD+x} || -z ${EMAIL+x} ]]; then
-  echo 'The following parameters are required: -c (critical threshold %) -w (warning threshold %)  -e (email address)'
+
+if [[ -z ${CRITICAL_THRESHOLD+x} || -z ${WARNING_THRESHOLD+x} || -z ${EMAIL+x} || ${CRITICAL_THRESHOLD} -lt ${WARNING_THRESHOLD} ]]; then
+  echo 'The following parameters are required: -c (critical threshold %) -w (warning threshold %)  -e (email address).  Critical threshold must always be greter than warning threshold.'
   exit
 fi
